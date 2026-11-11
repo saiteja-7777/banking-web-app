@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Transactions — Northstar Bank{% endblock %}
+{% block content %}
+<section class="dashboard-heading">
+  <div><div class="eyebrow">YOUR ACTIVITY</div><h1>Transaction history</h1><p>Your latest 100 account transactions.</p></div>
+  <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">← Back to dashboard</a>
+</section>
+<section class="activity-section history-card">
+  {% if transactions %}
+  <div class="transaction-table">
+    {% for tx in transactions %}
+    <div class="transaction-row">
+      <span class="tx-symbol {% if 'RECEIVED' in tx.transaction_type or tx.transaction_type == 'DEPOSIT' %}tx-in{% else %}tx-out{% endif %}">{% if 'RECEIVED' in tx.transaction_type or tx.transaction_type == 'DEPOSIT' %}↓{% else %}↑{% endif %}</span>
+      <div class="tx-info"><b>{{ tx.transaction_type.replace('_', ' ').title() }}</b><small>{{ tx.note or 'Account activity' }}</small></div>
+      <div class="tx-date">{{ tx.created_at }}</div>
+      <strong class="tx-amount {% if 'RECEIVED' in tx.transaction_type or tx.transaction_type == 'DEPOSIT' %}positive{% endif %}">{% if 'RECEIVED' in tx.transaction_type or tx.transaction_type == 'DEPOSIT' %}+{% else %}−{% endif %}₹{{ "{:,.0f}".format(tx.amount) }}</strong>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state"><span>◷</span><b>No transactions yet</b><p>Make a deposit to get started.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

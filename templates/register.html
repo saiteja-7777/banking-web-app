@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Open an account — Northstar Bank{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-aside"><div class="eyebrow">GET STARTED</div><h1>A fresh start<br>for your finances.</h1><p>Create a demo account in less than a minute. Your card number will be generated automatically.</p></div>
+  <div class="form-card">
+    <div class="form-heading"><span class="form-icon">✳</span><h2>Open an account</h2><p>All fields are required.</p></div>
+    <form method="post" class="stack-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Full name<input name="full_name" maxlength="80" placeholder="e.g. Sai Teja" required autocomplete="name"></label>
+      <div class="two-fields">
+        <label>Create 4-digit PIN<input name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="••••" required></label>
+        <label>Confirm PIN<input name="confirm_pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="••••" required></label>
+      </div>
+      <button class="btn btn-primary full-btn" type="submit">Create demo account <span>→</span></button>
+    </form>
+    <p class="form-foot">Already registered? <a href="{{ url_for('login') }}">Log in</a></p>
+  </div>
+</section>
+{% endblock %}

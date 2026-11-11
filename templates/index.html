@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Northstar Bank — Banking, made clearer{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="eyebrow-dot"></span> SIMPLE BANKING. SMARTER CONTROL.</div>
+    <h1>Your money,<br><span>in a clearer</span> place.</h1>
+    <p class="hero-text">A clean, easy-to-use banking experience for managing your demo account, tracking transactions and moving funds between accounts.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('register') }}">Open a demo account <span>→</span></a>
+      <a class="btn btn-secondary" href="{{ url_for('login') }}">I already have an account</a>
+    </div>
+    <div class="trust-row"><span>✓</span> PINs are hashed · <span>✓</span> Transfers use database transactions</div>
+  </div>
+  <div class="hero-visual">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+    <div class="bank-card">
+      <div class="card-top"><span class="card-chip"></span><span class="card-brand">northstar</span></div>
+      <div class="card-number">•••• &nbsp; •••• &nbsp; •••• &nbsp; 2048</div>
+      <div class="card-bottom"><span>DEMO ACCOUNT</span><span class="card-circles"><i></i><i></i></span></div>
+    </div>
+    <div class="float-note"><span class="note-icon">↗</span><div><b>Money in motion</b><small>Track every transfer</small></div></div>
+    <div class="float-balance"><small>YOUR ACCOUNT</small><b>One simple view.</b><span>Balance · Activity · Transfers</span></div>
+  </div>
+</section>
+<section class="feature-strip">
+  <div><span class="feature-icon">↗</span><b>Move money</b><small>Transfer between demo accounts</small></div>
+  <div><span class="feature-icon">◷</span><b>Stay informed</b><small>See your recent activity</small></div>
+  <div><span class="feature-icon">⌁</span><b>Built with care</b><small>Python, Flask and SQLite</small></div>
+</section>
+{% endblock %}

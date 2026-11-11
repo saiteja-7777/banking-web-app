@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Northstar Bank{% endblock %}
+{% block content %}
+<section class="dashboard-heading">
+  <div><div class="eyebrow">YOUR OVERVIEW</div><h1>Good to see you, {{ account.full_name.split(' ')[0] }}.</h1><p>Here’s what’s happening with your demo account.</p></div>
+  <div class="account-pill"><span class="status-dot"></span> Account active</div>
+</section>
+<section class="balance-card">
+  <div><span class="balance-label">AVAILABLE BALANCE</span><div class="balance-amount"><span>₹</span><strong id="balance-value">{{ "{:,.0f}".format(account.balance) }}</strong></div><div class="card-sub">Card ending in {{ account.card_number[-4:] }}</div></div>
+  <div class="balance-watermark">N</div>
+  <div class="balance-card-bottom"><span> NORTHSTAR · EVERYDAY ACCOUNT</span><span>•••• {{ account.card_number[-4:] }}</span></div>
+</section>
+<section class="action-grid">
+  <article class="action-card">
+    <div class="action-head"><span class="action-icon deposit-icon">↓</span><div><h3>Add income</h3><p>Deposit funds into your account</p></div></div>
+    <form method="post" action="{{ url_for('deposit') }}" class="action-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label class="sr-only" for="deposit-amount">Deposit amount</label><div class="amount-input"><span>₹</span><input id="deposit-amount" name="amount" type="number" min="1" max="1000000000" step="1" placeholder="Amount" required></div>
+      <button class="btn btn-primary" type="submit">Deposit funds</button>
+    </form>
+  </article>
+  <article class="action-card">
+    <div class="action-head"><span class="action-icon withdraw-icon">↑</span><div><h3>Withdraw</h3><p>Take funds out of your account</p></div></div>
+    <form method="post" action="{{ url_for('withdraw') }}" class="action-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label class="sr-only" for="withdraw-amount">Withdrawal amount</label><div class="amount-input"><span>₹</span><input id="withdraw-amount" name="amount" type="number" min="1" max="1000000000" step="1" placeholder="Amount" required></div>
+      <button class="btn btn-dark" type="submit">Withdraw funds</button>
+    </form>
+  </article>
+  <article class="action-card transfer-card">
+    <div class="action-head"><span class="action-icon transfer-icon">⇄</span><div><h3>Transfer money</h3><p>Send funds to another Northstar demo account</p></div></div>
+    <form method="post" action="{{ url_for('transfer') }}" class="action-form transfer-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label class="sr-only" for="receiver-card">Recipient card number</label><input id="receiver-card" name="receiver_card" inputmode="numeric" maxlength="16" placeholder="Recipient's 16-digit card number" required>
+      <label class="sr-only" for="transfer-amount">Transfer amount</label><div class="amount-input"><span>₹</span><input id="transfer-amount" name="amount" type="number" min="1" max="1000000000" step="1" placeholder="Amount" required></div>
+      <button class="btn btn-primary" type="submit">Send transfer <span>→</span></button>
+    </form>
+  </article>
+</section>
+<section class="activity-section">
+  <div class="section-heading"><div><div class="eyebrow">ACCOUNT ACTIVITY</div><h2>Recent transactions</h2></div><a href="{{ url_for('transactions') }}" class="text-link">View all <span>→</span></a></div>
+  {% if transactions %}
+  <div class="transaction-table">
+    {% for tx in transactions %}
+    <div class="transaction-row">
+      <span class="tx-symbol {% if 'RECEIVED' in tx.transaction_type or tx.transaction_type == 'DEPOSIT' %}tx-in{% else %}tx-out{% endif %}">{% if 'RECEIVED' in tx.transaction_type or tx.transaction_type == 'DEPOSIT' %}↓{% else %}↑{% endif %}</span>
+      <div class="tx-info"><b>{{ tx.transaction_type.replace('_', ' ').title() }}</b><small>{{ tx.note or 'Account activity' }}</small></div>
+      <div class="tx-date">{{ tx.created_at }}</div>
+      <strong class="tx-amount {% if 'RECEIVED' in tx.transaction_type or tx.transaction_type == 'DEPOSIT' %}positive{% endif %}">{% if 'RECEIVED' in tx.transaction_type or tx.transaction_type == 'DEPOSIT' %}+{% else %}−{% endif %}₹{{ "{:,.0f}".format(tx.amount) }}</strong>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state"><span>◷</span><b>No transactions yet</b><p>Your deposits, withdrawals and transfers will appear here.</p></div>
+  {% endif %}
+</section>
+<section class="close-account">
+  <div><b>Close demo account</b><p>This permanently deletes this demo account and its transaction history.</p></div>
+  <form method="post" action="{{ url_for('close_account') }}" class="close-form" data-confirm-close>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input name="confirmation" placeholder='Type "close"' aria-label="Type close to confirm" required>
+    <button class="btn btn-danger" type="submit">Close account</button>
+  </form>
+</section>
+{% endblock %}

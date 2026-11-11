@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Log in — Northstar Bank{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-aside"><div class="eyebrow">WELCOME BACK</div><h1>Your account,<br>right where<br>you left it.</h1><p>Log in with the card number and PIN you received when you created your demo account.</p></div>
+  <div class="form-card">
+    <div class="form-heading"><span class="form-icon">↗</span><h2>Log in</h2><p>Enter your account details.</p></div>
+    <form method="post" class="stack-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Card number<input name="card_number" inputmode="numeric" maxlength="16" placeholder="16-digit card number" required></label>
+      <label>4-digit PIN<input name="pin" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="••••" required></label>
+      <button class="btn btn-primary full-btn" type="submit">Log in securely <span>→</span></button>
+    </form>
+    <p class="form-foot">New to Northstar? <a href="{{ url_for('register') }}">Create an account</a></p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,4 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="empty-state error-state"><span>!</span><h1>{{ code }}</h1><b>{{ message }}</b><p>Head back to the dashboard or home page.</p><a class="btn btn-primary" href="{{ url_for('index') }}">Go home</a></section>
+{% endblock %}
